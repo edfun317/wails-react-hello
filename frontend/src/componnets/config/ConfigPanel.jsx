@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ConfigInput from './ConfigInput';
 import { CONFIG_LIMITS } from '../../constants/cardConfig';
 
@@ -10,8 +10,65 @@ const ConfigPanel = ({
   isAutoReset,
   setIsAutoReset,
   autoResetTime,
-  setAutoResetTime
+  setAutoResetTime,
+  cardWidth,
+  setCardWidth,
+  cardHeight,
+  setCardHeight
 }) => {
+  // 新增臨時輸入狀態
+  const [tempWidth, setTempWidth] = useState(cardWidth);
+  const [tempHeight, setTempHeight] = useState(cardHeight);
+
+  // 處理寬度變更
+  const handleWidthChange = (e) => {
+    const value = e.target.value;
+    setTempWidth(value);
+    
+    const numValue = parseInt(value);
+    if (!isNaN(numValue)) {
+      if (numValue >= CONFIG_LIMITS.CARD_SIZE.MIN && numValue <= CONFIG_LIMITS.CARD_SIZE.MAX) {
+        setCardWidth(numValue);
+      }
+    }
+  };
+
+  // 處理高度變更
+  const handleHeightChange = (e) => {
+    const value = e.target.value;
+    setTempHeight(value);
+    
+    const numValue = parseInt(value);
+    if (!isNaN(numValue)) {
+      if (numValue >= CONFIG_LIMITS.CARD_SIZE.MIN && numValue <= CONFIG_LIMITS.CARD_SIZE.MAX) {
+        setCardHeight(numValue);
+      }
+    }
+  };
+
+  // 處理失去焦點時的驗證
+  const handleWidthBlur = () => {
+    const numValue = parseInt(tempWidth);
+    if (isNaN(numValue) || numValue < CONFIG_LIMITS.CARD_SIZE.MIN) {
+      setTempWidth(CONFIG_LIMITS.CARD_SIZE.MIN);
+      setCardWidth(CONFIG_LIMITS.CARD_SIZE.MIN);
+    } else if (numValue > CONFIG_LIMITS.CARD_SIZE.MAX) {
+      setTempWidth(CONFIG_LIMITS.CARD_SIZE.MAX);
+      setCardWidth(CONFIG_LIMITS.CARD_SIZE.MAX);
+    }
+  };
+
+  const handleHeightBlur = () => {
+    const numValue = parseInt(tempHeight);
+    if (isNaN(numValue) || numValue < CONFIG_LIMITS.CARD_SIZE.MIN) {
+      setTempHeight(CONFIG_LIMITS.CARD_SIZE.MIN);
+      setCardHeight(CONFIG_LIMITS.CARD_SIZE.MIN);
+    } else if (numValue > CONFIG_LIMITS.CARD_SIZE.MAX) {
+      setTempHeight(CONFIG_LIMITS.CARD_SIZE.MAX);
+      setCardHeight(CONFIG_LIMITS.CARD_SIZE.MAX);
+    }
+  };
+
   return (
     <div className="mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
       <div className="flex flex-wrap gap-4 items-center">
@@ -28,6 +85,18 @@ const ConfigPanel = ({
           onChange={(e) => setColumns(Math.min(CONFIG_LIMITS.COLUMNS.MAX, Math.max(CONFIG_LIMITS.COLUMNS.MIN, Number(e.target.value))))}
           min={CONFIG_LIMITS.COLUMNS.MIN}
           max={CONFIG_LIMITS.COLUMNS.MAX}
+        />
+        <ConfigInput
+          label="Card Width"
+          value={tempWidth}
+          onChange={handleWidthChange}
+          onBlur={handleWidthBlur}
+        />
+        <ConfigInput
+          label="Card Height"
+          value={tempHeight}
+          onChange={handleHeightChange}
+          onBlur={handleHeightBlur}
         />
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">

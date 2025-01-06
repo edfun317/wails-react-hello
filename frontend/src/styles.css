@@ -1,3 +1,11 @@
+/* @tailwind 在這個檔案是有效的 - 忽略 VSCode 的警告 */
+/* postcss-ignore-next-line */
+@tailwind base;
+/* postcss-ignore-next-line */
+@tailwind components;
+/* postcss-ignore-next-line */
+@tailwind utilities;
+
 .app-container {
     padding: 2rem;
     max-width: 800px;

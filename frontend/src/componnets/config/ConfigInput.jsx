@@ -16,8 +16,6 @@ const ConfigInput = ({
       </label>
       <input
         type={type}
-        min={min}
-        max={max}
         value={value}
         onChange={onChange}
         className={`w-20 px-2 py-1 border rounded-md dark:bg-gray-700 dark:border-gray-600 ${className}`}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DEFAULT_VALUES } from '../constants/cardConfig';
+import { DEFAULT_VALUES, CONFIG_LIMITS } from '../constants/cardConfig';
 import { useCardSelection } from '../hooks/useCardSelection';
 import ConfigPanel from './config/ConfigPanel';
 import Card from './card/Card';
@@ -9,6 +9,10 @@ const CardGridConfig = () => {
   const [columns, setColumns] = useState(DEFAULT_VALUES.COLUMNS);
   const [isAutoReset, setIsAutoReset] = useState(true);
   const [autoResetTime, setAutoResetTime] = useState(DEFAULT_VALUES.AUTO_RESET_TIME);
+  
+  // 添加寬高狀態
+  const [cardWidth, setCardWidth] = useState(CONFIG_LIMITS.CARD_SIZE.DEFAULT_WIDTH);
+  const [cardHeight, setCardHeight] = useState(CONFIG_LIMITS.CARD_SIZE.DEFAULT_HEIGHT);
 
   const { selectedCard, handleCardClick } = useCardSelection(isAutoReset, autoResetTime);
 
@@ -29,6 +33,10 @@ const CardGridConfig = () => {
         setIsAutoReset={setIsAutoReset}
         autoResetTime={autoResetTime}
         setAutoResetTime={setAutoResetTime}
+        cardWidth={cardWidth}
+        setCardWidth={setCardWidth}
+        cardHeight={cardHeight}
+        setCardHeight={setCardHeight}
       />
 
       <div 
@@ -45,6 +53,8 @@ const CardGridConfig = () => {
             onClick={handleCardClick}
             isAutoReset={isAutoReset}
             autoResetTime={autoResetTime}
+            width={cardWidth}
+            height={cardHeight}
           />
         ))}
       </div>
