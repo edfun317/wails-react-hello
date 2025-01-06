@@ -73,27 +73,27 @@ const ConfigPanel = ({
     <div className="mb-6 p-4 bg-white dark:bg-gray-800 rounded-lg shadow-lg">
       <div className="flex flex-wrap gap-4 items-center">
         <ConfigInput
-          label="Cards"
+          label="卡片總數"
           value={cardCount}
           onChange={(e) => setCardCount(Math.min(CONFIG_LIMITS.CARDS.MAX, Math.max(CONFIG_LIMITS.CARDS.MIN, Number(e.target.value))))}
           min={CONFIG_LIMITS.CARDS.MIN}
           max={CONFIG_LIMITS.CARDS.MAX}
         />
         <ConfigInput
-          label="Columns"
+          label="一橫排數量"
           value={columns}
           onChange={(e) => setColumns(Math.min(CONFIG_LIMITS.COLUMNS.MAX, Math.max(CONFIG_LIMITS.COLUMNS.MIN, Number(e.target.value))))}
           min={CONFIG_LIMITS.COLUMNS.MIN}
           max={CONFIG_LIMITS.COLUMNS.MAX}
         />
         <ConfigInput
-          label="Card Width"
+          label="單個卡片寬度"
           value={tempWidth}
           onChange={handleWidthChange}
           onBlur={handleWidthBlur}
         />
         <ConfigInput
-          label="Card Height"
+          label="單個卡片高度"
           value={tempHeight}
           onChange={handleHeightChange}
           onBlur={handleHeightBlur}
@@ -111,12 +111,12 @@ const ConfigPanel = ({
               htmlFor="autoReset" 
               className="text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Auto Reset
+              開啟點選效果 
             </label>
           </div>
           {isAutoReset && (
             <ConfigInput
-              label="Reset Time (s)"
+              label="點選效果秒數"
               value={autoResetTime}
               onChange={(e) => setAutoResetTime(Math.min(CONFIG_LIMITS.RESET_TIME.MAX, Math.max(CONFIG_LIMITS.RESET_TIME.MIN, Number(e.target.value))))}
               min={CONFIG_LIMITS.RESET_TIME.MIN}

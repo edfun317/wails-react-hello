@@ -38,11 +38,11 @@ const CardGridConfig = () => {
         cardHeight={cardHeight}
         setCardHeight={setCardHeight}
       />
-
       <div 
-        className="grid gap-6"
+        className="grid gap-6 overflow-x-auto"
         style={{
-          gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))`
+          gridTemplateColumns: `repeat(${columns}, ${cardWidth}px)`,
+          justifyContent: columns === 1 ? 'center' : 'start'
         }}
       >
         {cards.map(card => (

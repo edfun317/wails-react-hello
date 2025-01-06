@@ -13,7 +13,7 @@ const CardDecoration = ({ isSelected, isAutoReset, autoResetTime }) => {
         <div className="absolute inset-0 border-2 border-blue-500/50 rounded-xl pointer-events-none">
           {isAutoReset && (
             <div className="absolute top-2 right-2 bg-blue-500/80 text-white text-xs px-2 py-1 rounded-full">
-              Reset in {autoResetTime}s
+              列印中等待 {autoResetTime} 秒
             </div>
           )}
         </div>

@@ -48,7 +48,7 @@ const Card = ({
 
       {isSelected && isAutoReset && (
         <div className="absolute top-2 right-2 px-2 py-1 bg-blue-500/80 text-white text-xs rounded-full">
-          Reset in {autoResetTime}s
+          列印中 {autoResetTime} 秒
         </div>
       )}
     </div>
