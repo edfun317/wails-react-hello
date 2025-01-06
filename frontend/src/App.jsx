@@ -1,7 +1,7 @@
 import { Routes, Route, Link } from 'react-router-dom'
 import Home from './pages/home'
 import About from './pages/About'
-import Card from './pages/cards'
+import Card from './pages/CardGrid'
 
 function App() {
   return (
