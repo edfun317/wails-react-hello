@@ -13,7 +13,8 @@ const Card = ({
   isAutoReset, 
   autoResetTime,
   width,
-  height
+  height,
+  disableButton=false
 }) => {
   return (
     <div
@@ -27,7 +28,10 @@ const Card = ({
       }}
     >
       <CardContent title={title} content={content} />
-      <CardButton />
+
+      {!disableButton && (
+        <CardButton />
+      )} 
       <CardDecoration 
         isSelected={selectedCard === id}
         isAutoReset={isAutoReset}
