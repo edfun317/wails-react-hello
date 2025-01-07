@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import WailsAPI from '../services/wailsApi';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { DEFAULT_VALUES, CONFIG_LIMITS } from '../constants/cardConfig';
 import { useCardSelection } from '../hooks/useCardSelection';
 import ConfigPanel from './config/ConfigPanel';
 import Card from './card/Card';
+import CardIdSettings from './config/CardIdSettings';
 
 const CardGridConfig = ({
   containerWidth = '100%',
   containerHeight = '100%'
 }) => {
+  // 原有的 state
   const [cardCount, setCardCount] = useState(DEFAULT_VALUES.CARD_COUNT);
   const [columns, setColumns] = useState(DEFAULT_VALUES.COLUMNS);
   const [isAutoReset, setIsAutoReset] = useState(true);
@@ -16,16 +19,48 @@ const CardGridConfig = ({
   const [cardWidth, setCardWidth] = useState(CONFIG_LIMITS.CARD_SIZE.DEFAULT_WIDTH);
   const [cardHeight, setCardHeight] = useState(CONFIG_LIMITS.CARD_SIZE.DEFAULT_HEIGHT);
   
-  // 新增控制面板顯示狀態
-  const [showConfigPanel, setShowConfigPanel] = useState(true);
+  // 控制面板顯示狀態
+  const [showConfigPanel, setShowConfigPanel] = useState(false);
+  // 卡片 ID 設定模態框狀態
+  const [showCardIdSettings, setShowCardIdSettings] = useState(false);
+  // 卡片數據
+  const [cards, setCards] = useState(
+    Array.from({ length: cardCount }, (_, i) => ({
+      id: i + 1,
+      customId: `Card ${i + 1}`,
+      title: `Card ${i + 1}`,
+      content: `Content for card ${i + 1}`
+    }))
+  );
 
   const { selectedCard, handleCardClick } = useCardSelection(isAutoReset, autoResetTime);
 
-  const cards = Array.from({ length: cardCount }, (_, i) => ({
-    id: i + 1,
-    title: `Card ${i + 1}`,
-    content: `Content for card ${i + 1}`
-  }));
+  useEffect(() => {
+    // Setup event listeners
+    const cleanupFns = [
+        WailsAPI.addEventListener(
+            WailsAPI.Events.TOGGLE_CONFIG,
+            () => setShowConfigPanel(prev => !prev)
+        ),
+        WailsAPI.addEventListener(
+            WailsAPI.Events.OPEN_CARD_SETTINGS,
+            () => setShowCardIdSettings(true)
+        )
+    ];
+
+    // Cleanup all listeners on unmount
+    return () => cleanupFns.forEach(cleanup => cleanup());
+  }, []);
+
+  // 更新卡片數量時重新生成卡片
+  useEffect(() => {
+    setCards(Array.from({ length: cardCount }, (_, i) => ({
+      id: i + 1,
+      customId: cards[i]?.customId || `Card ${i + 1}`,
+      title: `Card ${i + 1}`,
+      content: `Content for card ${i + 1}`
+    })));
+  }, [cardCount]);
 
   return (
     <div 
@@ -36,25 +71,7 @@ const CardGridConfig = ({
         overflow: 'auto'
       }}
     >
-      {/* 控制面板切換按鈕 */}
-      <button
-        className="w-full flex items-center justify-center py-2 bg-white/50 dark:bg-gray-800/50 hover:bg-white/70 dark:hover:bg-gray-800/70 transition-colors"
-        onClick={() => setShowConfigPanel(!showConfigPanel)}
-      >
-        {showConfigPanel ? (
-          <>
-            <ChevronUp size={20} />
-            <span className="ml-2 text-gray-700 dark:text-gray-200">Hide Configuration</span>
-          </>
-        ) : (
-          <>
-            <ChevronDown size={20} />
-            <span className="ml-2 text-gray-700 dark:text-gray-200">Show Configuration</span>
-          </>
-        )}
-      </button>
-
-      {/* 控制面板 */}
+      {/* 配置面板 */}
       {showConfigPanel && (
         <div className="p-6">
           <ConfigPanel
@@ -73,7 +90,7 @@ const CardGridConfig = ({
         </div>
       )}
 
-      {/* 卡片網格容器 */}
+      {/* 卡片網格 */}
       <div 
         className="grid gap-6 overflow-x-auto p-6"
         style={{
@@ -93,6 +110,15 @@ const CardGridConfig = ({
           />
         ))}
       </div>
+
+      {/* 卡片 ID 設定模態框 */}
+      {showCardIdSettings && (
+        <CardIdSettings
+          cards={cards}
+          setCards={setCards}
+          onClose={() => setShowCardIdSettings(false)}
+        />
+      )}
     </div>
   );
 };

@@ -13,3 +13,7 @@ export function Greet(arg1) {
 export function NowTime() {
   return window['go']['main']['App']['NowTime']();
 }
+
+export function SaveCardSettings(arg1) {
+  return window['go']['main']['App']['SaveCardSettings'](arg1);
+}

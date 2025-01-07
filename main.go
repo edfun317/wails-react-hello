@@ -36,6 +36,7 @@ func main() {
 		Height:           768,
 		OnStartup:        app.startup,
 		BackgroundColour: &options.RGBA{R: 255, G: 255, B: 255, A: 1},
+		Menu:             makeMenu(app),
 		AssetServer: &assetserver.Options{
 			// 在開發模式下，這個設置允許 Wails 正確處理前端資產
 			Assets: assets,
