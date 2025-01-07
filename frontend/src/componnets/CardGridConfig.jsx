@@ -63,7 +63,6 @@ const CardGridConfig = ({
             columns={columns}
             setColumns={setColumns}
             isAutoReset={isAutoReset}
-            setIsAutoReset={setIsAutoReset}
             autoResetTime={autoResetTime}
             setAutoResetTime={setAutoResetTime}
             cardWidth={cardWidth}
@@ -88,7 +87,6 @@ const CardGridConfig = ({
             {...card}
             selectedCard={selectedCard}
             onClick={handleCardClick}
-            isAutoReset={isAutoReset}
             autoResetTime={autoResetTime}
             width={cardWidth}
             height={cardHeight}

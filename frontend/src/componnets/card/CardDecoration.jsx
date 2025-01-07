@@ -1,6 +1,6 @@
 import React from 'react';
 
-const CardDecoration = ({ isSelected, isAutoReset, autoResetTime }) => {
+const CardDecoration = ({ isSelected, isAutoReset=true, autoResetTime }) => {
   return (
     <>
       <div 

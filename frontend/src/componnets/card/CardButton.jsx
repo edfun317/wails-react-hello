@@ -1,34 +1,37 @@
 import React from 'react';
-//import { ChevronRight } from 'lucide-react';
-import { Hand } from 'lucide-react';
+import { Pointer } from 'lucide-react';
 
-
+/**
+ * CardButton Component
+ * A button component that appears in the bottom-right corner with a triangular background
+ */
 const CardButton = () => {
-  // 增加斜角區域的尺寸
+  // Define the size of the corner area (increased from original 20px)
   const cornerSize = {
-    width: '80px',  // 原本是 20px
-    height: '80px'  // 原本是 20px
+    width: '80px',   // Originally 20px
+    height: '80px'   // Originally 20px
   };
 
-  // 調整按鈕位置以配合更大的斜角區域
+  // Adjust button position to match the larger corner area
   const buttonPosition = {
-    bottom: '16px',  // 原本是 4px
-    right: '16px'    // 原本是 4px
+    bottom: '16px',  // Originally 4px
+    right: '16px'    // Originally 4px
   };
 
   return (
+    // Container for the entire button component
     <div className="absolute bottom-0 right-0">
-      {/* 斜角背景 */}
+      {/* Triangular background created using clip-path */}
       <div 
         className="absolute bottom-0 right-0 bg-blue-500/10"
         style={{
-          width: '160px',          // 原本是 w-20 (80px)
-          height: '160px',         // 原本是 h-20 (80px)
-          clipPath: 'polygon(100% 0, 100% 100%, 0 100%)'
+          width: '160px',          // Originally w-20 (80px)
+          height: '160px',         // Originally h-20 (80px)
+          clipPath: 'polygon(100% 0, 100% 100%, 0 100%)' // Creates a triangle shape
         }}
       />
       
-      {/* 按鈕 */}
+      {/* Interactive button element with hover effects */}
       <button 
         className="absolute p-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors duration-200 group-hover:scale-110 transform-gpu pointer-events-none"
         style={{
@@ -36,7 +39,8 @@ const CardButton = () => {
           right: '16px'
         }}
       >
-        <Hand size={24} /> {/* 使用 PointRight 或 Hand 圖標 */}
+        {/* Pointer icon from lucide-react library */}
+        <Pointer size={24} /> 
       </button>
     </div>
   );

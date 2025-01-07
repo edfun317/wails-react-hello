@@ -10,7 +10,6 @@ const Card = ({
   content, 
   selectedCard, 
   onClick, 
-  isAutoReset, 
   autoResetTime,
   width,
   height,
@@ -34,7 +33,6 @@ const Card = ({
       )} 
       <CardDecoration 
         isSelected={selectedCard === id}
-        isAutoReset={isAutoReset}
         autoResetTime={autoResetTime}
       />
     </div>

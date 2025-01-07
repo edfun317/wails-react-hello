@@ -80,7 +80,7 @@ const ConfigPanel = ({
           max={CONFIG_LIMITS.CARDS.MAX}
         />
         <ConfigInput
-          label="一橫排數量"
+          label="橫排數量"
           value={columns}
           onChange={(e) => setColumns(Math.min(CONFIG_LIMITS.COLUMNS.MAX, Math.max(CONFIG_LIMITS.COLUMNS.MIN, Number(e.target.value))))}
           min={CONFIG_LIMITS.COLUMNS.MIN}
@@ -99,21 +99,7 @@ const ConfigPanel = ({
           onBlur={handleHeightBlur}
         />
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              id="autoReset"
-              checked={isAutoReset}
-              onChange={(e) => setIsAutoReset(e.target.checked)}
-              className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-            />
-            <label 
-              htmlFor="autoReset" 
-              className="text-sm font-medium text-gray-700 dark:text-gray-300"
-            >
-              開啟點選效果 
-            </label>
-          </div>
+
           {isAutoReset && (
             <ConfigInput
               label="點選效果秒數"
