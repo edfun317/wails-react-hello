@@ -1,6 +1,11 @@
 package main
 
 import (
+	"encoding/base64"
+	"fmt"
+	"os"
+	"path"
+
 	"github.com/wailsapp/wails/v2/pkg/menu"
 	"github.com/wailsapp/wails/v2/pkg/menu/keys"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -109,5 +114,63 @@ func makeMenu(app *App) *menu.Menu {
 	settingsMenu.AddText("卡片 ID 設定", keys.CmdOrCtrl("i"), func(_ *menu.CallbackData) {
 		runtime.EventsEmit(app.ctx, "open-card-id-settings")
 	})
+
+	settingsMenu.AddText("設定背景圖片", keys.CmdOrCtrl("b"), func(_ *menu.CallbackData) {
+		selectedPath, err := runtime.OpenFileDialog(app.ctx, runtime.OpenDialogOptions{
+			Title: "選擇背景圖片",
+			Filters: []runtime.FileFilter{
+				{
+					DisplayName: "圖片文件 (*.jpg;*.png)",
+					Pattern:     "*.jpg;*.jpeg;*.png",
+				},
+			},
+		})
+
+		// 處理錯誤
+		if err != nil {
+			runtime.MessageDialog(app.ctx, runtime.MessageDialogOptions{
+				Type:    runtime.ErrorDialog,
+				Title:   "錯誤",
+				Message: "選擇文件失敗：" + err.Error(),
+			})
+			return
+		}
+
+		// 檢查是否有選擇文件
+		if selectedPath != "" {
+			fmt.Printf("Selected file: %s\n", selectedPath)
+			// 直接讀取文件並轉換為 base64
+			fileData, err := os.ReadFile(selectedPath)
+			if err != nil {
+				fmt.Printf("Error reading file: %v\n", err)
+				return
+			}
+
+			// 轉換為 base64
+			base64Data := base64.StdEncoding.EncodeToString(fileData)
+
+			// 直接調用 SaveBackgroundImage
+			filename := path.Base(selectedPath)
+			imgData := BackgroundImage{
+				Filename: filename,
+				Data:     base64Data,
+			}
+
+			filePath, err := app.SaveBackgroundImage(imgData)
+			if err != nil {
+				fmt.Printf("Error saving background: %v\n", err)
+				runtime.MessageDialog(app.ctx, runtime.MessageDialogOptions{
+					Type:    runtime.ErrorDialog,
+					Title:   "錯誤",
+					Message: "保存背景圖片失敗：" + err.Error(),
+				})
+				return
+			}
+
+			// 發送事件到前端
+			runtime.EventsEmit(app.ctx, "background-image-updated", filePath)
+		}
+	})
+
 	return appMenu
 }
